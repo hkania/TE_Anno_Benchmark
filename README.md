@@ -3,7 +3,7 @@
 # Welcome to TE_Bench
 ## A Snakemake workflow associated with the manuscript *TE_Bench: A Foundational Benchmarking Workflow for Transposable Element Discovery Pipelines* (submitted).
 
-![All](https://github.com/hkania/TE_Bench/blob/78e0ffe048db59dfe54ee32364316475c1a6c4b5/.images/Full_Workflow2.png?raw=true)
+![All](https://github.com/hkania/TE_Bench/blob/c00ad041d3a1783a140a844952528a25c42bea37/.images/Full_Workflow.png?raw=true)
 # Guides
 The [Quickstart Guide](https://github.com/hkania/TE_Bench/blob/main/README.md#quick-start-guide) details how to download and test the associated Snakemake workflows. 
 
@@ -245,7 +245,7 @@ This stage allow you to generate statistics and data visualizations for a given 
 After following the Quickstart Guide to set up and test TE_Bench, users are able to use the snakemake workflows on publicly available data or their own data.
 
 ## 1. [**Simulation_Snakefile**](https://github.com/hkania/TE_Bench/blob/main/Simulation_Snakefile), **Workflow Stage 1**
-![Sim](https://github.com/hkania/TE_Bench/blob/4c277ab05968609ff7358a3d7a827009a531ff79/.images/Simulation_Workflow.png?raw=true)
+![Sim](https://github.com/hkania/TE_Bench/blob/ea986de5faff60d6383795668fb87652921b319c/.images/Simulation_Workflow.png?raw=true)
 This stage allows you to generate simulated sequences using GARLIC with the Dfam or RepBase databases to use as 'ground truth' in a benchmarking effort.
   
   * By default, Simulation_Snakefile will run a simulation using Dfam to generate 2 1000bp sequences and is configured to run with a SLURM job manager.
