@@ -38,3 +38,5 @@ target_types:
     - "LTR"
 
 column: "V5"
+
+redundancy: true
