@@ -118,6 +118,7 @@ def plot_dual(gt_classes, test_classes, gt_test, test_test, outfile):
         vmin=0,
         vmax=1.5,
         linewidths=0.5,
+        annot=True,
         ax=axes[0]
     )
     axes[0].set_title("REF × TEST (Accuracy / Misclassification)")
@@ -133,6 +134,7 @@ def plot_dual(gt_classes, test_classes, gt_test, test_test, outfile):
         vmin=0,
         vmax=1.5,
         linewidths=0.5,
+        annot=True,
         ax=axes[1]
     )
     axes[1].set_title("TEST × TEST (Redundancy / Fragmentation)")
