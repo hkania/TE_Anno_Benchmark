@@ -16,7 +16,7 @@ clean_eg      : Run earlGrey-like CSV generation (default: True)
 clean_rm      : Run RepeatModeler2-like CSV generation (default: True)
 clean_edta    : Run EDTA-like CSV generation (default: True)
 radar         : Generate annotation statistics radar plots (default: True)
-nest          : Perform nested TE analysis (default: True; will run comprehensive if stg3 is true and selective is stg4 is true or both if both stg3 and stg4 are true)
+nest          : Perform nested TE analysis (default: True; will run comprehensive if stg3a is true and selective is stg3b is true or both if both stg3a and stg3b are true)
 pie           : Generate comprehensive annotation TE class pie charts (default: True)
 iden          : Perform percent identity analysis if Garlic simulation was used (default: True)
 test          : Run test workflow using provided data from TE_Bench (default: False)
@@ -30,6 +30,7 @@ inserts_dir   : Directory containing the inserts file (default: input/annotation
 extras        : Additional category within 'column' (see below) to include in pie charts and identity regressions (default: Unknown elements)
 column        : Column to filter CSV files on (default: V5 which holds major TE class)
 target_types  : TE types for stage3b analysis (default: LTR. To include additional classes, specify with target_types=LINE,SINE,LTR ...)
+redundancy    : Perform a redundancy analysis (default: True)
 
 Examples:
     snakemake -s Benchmark_Snakefile --cores 1 --rerun-incomplete (ALL DEFAULTS)
@@ -70,12 +71,13 @@ CLEAN_EG = get_flag(config, "clean_eg")
 CLEAN_RM = get_flag(config, "clean_rm")
 CLEAN_EDTA = get_flag(config, "clean_edta")
 RADAR = get_flag(config, "radar")
-STAGE3a = get_flag(config, "stg3")
-STAGE3b = get_flag(config, "stg4")
+STAGE3a = get_flag(config, "stg3a")
+STAGE3b = get_flag(config, "stg3b")
 NEST = get_flag(config, "nest")
 PIE = get_flag(config, "pie")
 IDEN = get_flag(config, "iden")
 TEST = get_flag(config, "test", default=False)
+REDUN = get_flag(config, "redundancy")
 
 # Assumes the user has already run Stage2 to generate the Garlic csv file, or provides another reference CSV file formatted with
 # the same columns as Garlic. This reference CSV file MUST be in the outputs/cleaned_csvs/{seq_name}/full/comprehensive/ directory and you need to
@@ -161,6 +163,30 @@ rule all:
             ) if (IDEN and STAGE3a) else []
             ),
             (expand(
+                os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/plots/{seq_name}_redundancyheatmap_{prog}.pdf"),
+                seq_name=seq_names,
+                prog=program_names
+            ) if (REDUN and STAGE3a) else []
+            ),
+            (expand(
+                os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_partialoverlaps.tsv"),
+                seq_name=seq_names,
+                prog=program_names
+            ) if (REDUN and STAGE3a) else []
+            ),
+            (expand(
+                os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundantoverlaps.tsv"),
+                seq_name=seq_names,
+                prog=program_names
+            ) if (REDUN and STAGE3a) else []
+            ),
+            (expand(
+                os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundancysummary.txt"),
+                seq_name=seq_names,
+                prog=program_names
+            ) if (REDUN and STAGE3a) else []
+            ),          
+            (expand(
                 os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/plots/{seq_name}_nesting.pdf"),
                 seq_name=seq_names
             ) if (NEST and STAGE3a) else []
@@ -230,8 +256,8 @@ if TEST:
 if TEST:
     rule rm_to_csv:
         input:
-            gff=os.path.join(workflow.basedir, "input/testdata/{seq_name}" + config["RM2_gff_ext"]),
-            fasta=os.path.join(workflow.basedir, "input/testdata/{seq_name}" + config["RM2_fasta_ext"])
+            gff=os.path.join(workflow.basedir, "input/annotationdata/testing/{seq_name}" + config["RM2_gff_ext"]),
+            fasta=os.path.join(workflow.basedir, "input/annotationdata/testing/{seq_name}" + config["RM2_fasta_ext"])
         output:
             csv=os.path.join(workflow.basedir, "output/cleaned_csvs/{seq_name}/full/comprehensive/{seq_name}_RM2.csv")
         script:
@@ -251,7 +277,7 @@ if CLEAN_RM and not TEST:
 if TEST:
     rule eg_to_csv:
         input:
-            gff=os.path.join(workflow.basedir, "input/testdata/{seq_name}" + config["EG_gff_ext"])
+            gff=os.path.join(workflow.basedir, "input/annotationdata/testing/{seq_name}" + config["EG_gff_ext"])
         output:
             csv=os.path.join(workflow.basedir, "output/cleaned_csvs/{seq_name}/full/comprehensive/{seq_name}_EG.csv")
         script:
@@ -270,7 +296,7 @@ if CLEAN_EG and not TEST:
 if TEST:
     rule edta_to_csv:
         input:
-            gff=os.path.join(workflow.basedir, "input/testdata/{seq_name}" + config["EDTA_gff_ext"])
+            gff=os.path.join(workflow.basedir, "input/annotationdata/testing/{seq_name}" + config["EDTA_gff_ext"])
         output:
             csv=os.path.join(workflow.basedir, "output/cleaned_csvs/{seq_name}/full/comprehensive/{seq_name}_EDTA.csv")
         script:
@@ -364,6 +390,38 @@ if RADAR and STAGE3a:
             python3 ./scripts/view_stats.py {input.stats} {output.plot} {wildcards.seq_name} {params.coverage:q}
             """
 
+# Generate redundancy summaries and TSV files
+if REDUN and STAGE3a:
+    rule redundancy_summaries:
+        input:
+            test_csv=os.path.join(workflow.basedir, "output/cleaned_csvs/{seq_name}/full/comprehensive/{seq_name}_{prog}.csv")
+        output:
+            partial=os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_partialoverlaps.tsv"),
+            redundant=os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundantoverlaps.tsv"),
+            summary=os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundancysummary.txt")
+        shell:
+            """
+            sort -t',' -k1,1 -k3,3n {input.test_csv} |
+            python3 ./scripts/bpoverlap.py \
+            /dev/stdin \
+            {output.partial} \
+            {output.redundant} \
+            {output.summary}
+            """
+
+# Generate redundancy heatmaps
+if REDUN and STAGE3a:
+    rule redundancy_heatmaps:
+        input:
+            ref_csv=os.path.join(workflow.basedir, "output/cleaned_csvs/{seq_name}/full/comprehensive/{seq_name}" + ref_csv_ext),
+            test_csv=os.path.join(workflow.basedir, "output/cleaned_csvs/{seq_name}/full/comprehensive/{seq_name}_{prog}.csv")
+        output:
+            plot=os.path.join(workflow.basedir, "output/stats/{seq_name}/comprehensive/plots/{seq_name}_redundancyheatmap_{prog}.pdf")
+        shell:
+            """
+            python3 ./scripts/redundancy_heatmap.py {input.ref_csv} {input.test_csv} {output.plot}
+            """
+            
 # Define the CSVs necessary for the nested analysis
 if NEST and STAGE3a:
     def comprehensive_nesting_test_csvs(wildcards):
