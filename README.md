@@ -547,7 +547,7 @@ Benchmark_Snakefile requires these files regardless of what tool(s) you used for
     > ```
 
 ### Outputs
-![BenchOutputA](https://github.com/hkania/TE_Bench/blob/609da477fe405277c63ccd86be62aa7985b0fa10/.images/Bench_A_Scripts.png?raw=true)
+![BenchOutputA](https://github.com/hkania/TE_Bench/blob/94db6f3cfaa349e750f9fc6355fc0571ce3001e9/.images/Bench_A_Scripts_May22.png?raw=true)
 Once Benchmark_Snakefile completes, you will have some subset of the following outputs, or all if you ran Garlic simulations with complete comprehensive benchmarking.
 > model = {seq_name}, program = {prog}
 
@@ -588,7 +588,7 @@ Once Benchmark_Snakefile completes, you will have some subset of the following o
 
     * output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundantoverlaps.tsv -- _One TSV file per test TE annotation specifying TEs and associated bps within the test annotation that have redundant (>95%) overlap. Note that nested TEs (100% overlap) are not included._
 
-    * output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundancysummary.txt -- _One text file per TE annotation specifying details about xx within the annotation including xxx._
+    * output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundancysummary.txt -- _One text file per TE annotation specifying details about overlapping base pairs and categorizations within the test annotation._
 
     * output/stats/{seq_name}/comprehensive/plots/{seq_name}_redundancyheatmap_{prog}.pdf -- _One dual heatmap per TE annotation showing reference-test annotation class correspondence and misclassification on the righthand side and signals of within-annotation redundancy/fragmentation on the lefthandside._
 
