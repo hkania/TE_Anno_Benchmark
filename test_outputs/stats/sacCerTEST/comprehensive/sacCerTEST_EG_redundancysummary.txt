@@ -1,0 +1,37 @@
+TOTAL OVERLAPPING BP:	3783
+
+=== OVERLAPPING BASE PAIR COUNTS BY CATEGORY PAIR ===
+LTR vs LTR	1048
+LTR vs Non-TE	828
+Non-TE vs Non-TE	747
+LTR vs Unknown	1108
+Non-TE vs Unknown	52
+
+=== OVERLAPPING BASE PAIR COUNTS BY CATEGORY PAIR + OVERLAP RELATIONSHIP ===
+LTR vs LTR|LTR_contains_LTR	1022
+LTR vs Non-TE|LTR_contains_Non-TE	828
+Non-TE vs Non-TE|Non-TE_contains_Non-TE	747
+LTR vs Unknown|LTR_contains_Unknown	727
+LTR vs LTR|partial	26
+LTR vs Unknown|Unknown_contains_LTR	68
+LTR vs Unknown|partial	103
+Non-TE vs Unknown|Unknown_contains_Non-TE	52
+LTR vs Unknown|redundant	210
+
+=== UNIQUE OVERLAPPING ROW COUNTS BY CATEGORY PAIR ===
+LTR vs LTR	18
+LTR vs Non-TE	48
+Non-TE vs Non-TE	33
+LTR vs Unknown	22
+Non-TE vs Unknown	2
+
+=== UNIQUE OVERLAPPING ROW COUNTS BY CATEGORY PAIR + OVERLAP RELATIONSHIP ===
+LTR vs LTR|LTR_contains_LTR	16
+LTR vs Non-TE|LTR_contains_Non-TE	48
+Non-TE vs Non-TE|Non-TE_contains_Non-TE	33
+LTR vs Unknown|LTR_contains_Unknown	16
+LTR vs LTR|partial	2
+LTR vs Unknown|Unknown_contains_LTR	2
+LTR vs Unknown|partial	2
+Non-TE vs Unknown|Unknown_contains_Non-TE	2
+LTR vs Unknown|redundant	2

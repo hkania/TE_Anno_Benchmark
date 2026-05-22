@@ -1,0 +1,59 @@
+TOTAL OVERLAPPING BP:	259553
+
+=== OVERLAPPING BASE PAIR COUNTS BY CATEGORY PAIR ===
+DNA vs DNA	179525
+DNA vs Unknown	15125
+DNA vs LTR	45473
+LTR vs Unknown	663
+LINE vs LINE	3738
+DNA vs LINE	7161
+Unknown vs Unknown	585
+LTR vs LTR	7283
+
+=== OVERLAPPING BASE PAIR COUNTS BY CATEGORY PAIR + OVERLAP RELATIONSHIP ===
+DNA vs DNA|partial	129248
+DNA vs Unknown|partial	13503
+DNA vs DNA|redundant	45143
+DNA vs LTR|partial	37194
+LTR vs Unknown|partial	663
+LINE vs LINE|partial	2794
+DNA vs LINE|partial	2641
+DNA vs LTR|redundant	7819
+DNA vs DNA|DNA_contains_DNA	5134
+DNA vs LINE|DNA_contains_LINE	4520
+Unknown vs Unknown|partial	282
+LTR vs LTR|partial	157
+Unknown vs Unknown|redundant	303
+LTR vs LTR|LTR_contains_LTR	7126
+LINE vs LINE|redundant	944
+DNA vs Unknown|DNA_contains_Unknown	1622
+DNA vs LTR|DNA_contains_LTR	460
+
+=== UNIQUE OVERLAPPING ROW COUNTS BY CATEGORY PAIR ===
+DNA vs DNA	2556
+DNA vs Unknown	774
+DNA vs LTR	1111
+LTR vs Unknown	28
+LINE vs LINE	142
+DNA vs LINE	69
+Unknown vs Unknown	12
+LTR vs LTR	24
+
+=== UNIQUE OVERLAPPING ROW COUNTS BY CATEGORY PAIR + OVERLAP RELATIONSHIP ===
+DNA vs DNA|partial	2150
+DNA vs Unknown|partial	758
+DNA vs DNA|redundant	370
+DNA vs LTR|partial	1033
+LTR vs Unknown|partial	28
+LINE vs LINE|partial	138
+DNA vs LINE|partial	41
+DNA vs LTR|redundant	72
+DNA vs DNA|DNA_contains_DNA	36
+DNA vs LINE|DNA_contains_LINE	28
+Unknown vs Unknown|partial	6
+LTR vs LTR|partial	18
+Unknown vs Unknown|redundant	6
+LTR vs LTR|LTR_contains_LTR	6
+LINE vs LINE|redundant	4
+DNA vs Unknown|DNA_contains_Unknown	16
+DNA vs LTR|DNA_contains_LTR	6

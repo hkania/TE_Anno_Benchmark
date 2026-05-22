@@ -1,0 +1,69 @@
+TOTAL OVERLAPPING BP:	44269
+
+=== OVERLAPPING BASE PAIR COUNTS BY CATEGORY PAIR ===
+DNA vs Non-TE	10475
+DNA vs LINE	404
+Non-TE vs Non-TE	1843
+DNA vs LTR	2846
+LTR vs Non-TE	679
+DNA vs DNA	15782
+LTR vs LTR	11585
+LINE vs LTR	420
+LINE vs Non-TE	31
+LINE vs LINE	204
+
+=== OVERLAPPING BASE PAIR COUNTS BY CATEGORY PAIR + OVERLAP RELATIONSHIP ===
+DNA vs Non-TE|DNA_contains_Non-TE	6091
+DNA vs LINE|LINE_contains_DNA	57
+DNA vs LINE|partial	26
+Non-TE vs Non-TE|Non-TE_contains_Non-TE	1838
+DNA vs LTR|DNA_contains_LTR	1546
+LTR vs Non-TE|LTR_contains_Non-TE	679
+DNA vs DNA|DNA_contains_DNA	15009
+DNA vs Non-TE|partial	1399
+LTR vs LTR|LTR_contains_LTR	11482
+DNA vs LTR|LTR_contains_DNA	956
+DNA vs DNA|partial	773
+LINE vs LTR|LTR_contains_LINE	306
+LTR vs LTR|partial	103
+LINE vs LTR|LINE_contains_LTR	114
+DNA vs LTR|partial	344
+DNA vs Non-TE|Non-TE_contains_DNA	2985
+DNA vs LINE|DNA_contains_LINE	321
+LINE vs Non-TE|LINE_contains_Non-TE	31
+Non-TE vs Non-TE|partial	5
+LINE vs LINE|LINE_contains_LINE	204
+
+=== UNIQUE OVERLAPPING ROW COUNTS BY CATEGORY PAIR ===
+DNA vs Non-TE	238
+DNA vs LINE	13
+Non-TE vs Non-TE	82
+DNA vs LTR	63
+LTR vs Non-TE	34
+DNA vs DNA	192
+LTR vs LTR	121
+LINE vs LTR	8
+LINE vs Non-TE	2
+LINE vs LINE	6
+
+=== UNIQUE OVERLAPPING ROW COUNTS BY CATEGORY PAIR + OVERLAP RELATIONSHIP ===
+DNA vs Non-TE|DNA_contains_Non-TE	208
+DNA vs LINE|LINE_contains_DNA	2
+DNA vs LINE|partial	1
+Non-TE vs Non-TE|Non-TE_contains_Non-TE	80
+DNA vs LTR|DNA_contains_LTR	30
+LTR vs Non-TE|LTR_contains_Non-TE	34
+DNA vs DNA|DNA_contains_DNA	160
+DNA vs Non-TE|partial	14
+LTR vs LTR|LTR_contains_LTR	113
+DNA vs LTR|LTR_contains_DNA	22
+DNA vs DNA|partial	32
+LINE vs LTR|LTR_contains_LINE	6
+LTR vs LTR|partial	8
+LINE vs LTR|LINE_contains_LTR	2
+DNA vs LTR|partial	11
+DNA vs Non-TE|Non-TE_contains_DNA	16
+DNA vs LINE|DNA_contains_LINE	10
+LINE vs Non-TE|LINE_contains_Non-TE	2
+Non-TE vs Non-TE|partial	2
+LINE vs LINE|LINE_contains_LINE	6
