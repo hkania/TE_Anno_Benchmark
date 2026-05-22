@@ -3,7 +3,7 @@
 # Welcome to TE_Bench
 ## A Snakemake workflow associated with the manuscript *TE_Bench: A Foundational Benchmarking Workflow for Transposable Element Discovery Pipelines* (submitted).
 
-![All](https://github.com/hkania/TE_Bench/blob/c00ad041d3a1783a140a844952528a25c42bea37/.images/Full_Workflow.png?raw=true)
+![All](https://github.com/hkania/TE_Bench/blob/8ab2e67c1f3254b358f0668d886f99d07e4c8616/.images/Full_WorkflowMay18.png?raw=true)
 # Guides
 The [Quickstart Guide](https://github.com/hkania/TE_Bench/blob/main/README.md#quick-start-guide) details how to download and test the associated Snakemake workflows. 
 
@@ -155,6 +155,12 @@ This stage allows you to generate simulated sequences using GARLIC with the Dfam
   * `garlic_sequence_generation` uses ~660 Mb on one core and takes ~1 minute
   * `seqkit_split` uses ~220 Mb on 1 core and takes <1 min
 
+*IMPORTANT:* There is nothing to compare the outputs from testing Simulation_Snakefile to. Garlic sequence generation does not follow a given seed. You can double check that it ran correctly in the resulting log file. The log file can be located in `log/rule_garlic_sequence_generation/droMelTEST`. Use the command below to check that a value of 2 returned as expected (you will need to fill in XX with the corresponding slurm job number that snakemake generated for your rule_garlic_sequence_generation step).
+
+> ```
+> `grep -c 'Generated a sequence' log/rule_garlic_sequence_generation/droMelRBTEST/XX.log`
+> ```
+
 ### 2. Test [**AnnotationGen_Snakefile**](https://github.com/hkania/TE_Bench/blob/main/AnnotationGen_Snakefile), **Workflow Stage 2**
 
 This stage allows you to generate a GFF file to use as your reference GFF, or 'ground truth', after obtaining GARLIC sequences from the simulation stage above.
@@ -217,32 +223,36 @@ This stage allow you to generate statistics and data visualizations for a given 
     > all                                            1
     > comprehensive_calculate_statistics             2
     > comprehensive_coverage_analysis                6
+    > comprehensive_garlic_perc_identity             2
     > comprehensive_garlic_plot_perc_identity        6
     > comprehensive_nest_csvs                        2
     > comprehensive_nesting_plot                     2
-    > comprehensive_statistics_radar_plot            2
+    > edta_to_csv                                    2
+    > eg_to_csv                                      2
     > move_ref_csv_test                              2
+    > redundancy_heatmaps                            6
+    > redundancy_summaries                           6
+    > rm_to_csv                                      2
     > selective_calculate_statistics                 2
     > selective_coverage_analysis                    6
-    > selective_filter_csvs                          2
+    > selective_filter_csvs                          8
     > selective_nest_csvs                            2
     > selective_nesting_plot                         2
-    > selective_statistics_radar_plot                2
-    > total                                         39
+    > total                                         61
     > ```
     
 * **Test data Run Times:**
   * All jobs in the test run take ~6 minutes collectively when using 1 core.
+  * You may need to submit the same command if the system does not complete the first time around. Do not worry, it should complete remaining jobs the second time.
 
 ### 4. Compare the files in TE_Bench/output with the provided [test_outputs](https://github.com/hkania/TE_Bench/tree/main/test_outputs) to ensure everything generated correctly
-*IMPORTANT:* There is nothing to compare the outputs from testing Simulation_Snakefile to. Garlic sequence generation does not follow a given seed. You can double check that it ran correctly in the resulting log file. The log file can be located in `log/rule_garlic_sequence_generation/droMelTEST`. Use the command below to check that a value of 2 returned as expected (you will need to fill in XX with the corresponding slurm job number that snakemake generated for your rule_garlic_sequence_generation step).
-
-> ```
-> `grep -c 'Generated a sequence' log/rule_garlic_sequence_generation/droMelRBTEST/XX.log`
-> ```
 
 # User Guide
 After following the Quickstart Guide to set up and test TE_Bench, users are able to use the snakemake workflows on publicly available data or their own data.
+
+* [Stage 1 - GARLIC Sequence Simulation](https://github.com/hkania/TE_Bench/tree/main#1-simulation_snakefile-workflow-stage-1)
+* [Stage 2 - Annotation Generation](https://github.com/hkania/TE_Bench/tree/main#2-annotationgen_snakefile-workflow-stage-2)
+* [Stage 3 - Benchmarking](https://github.com/hkania/TE_Bench/tree/main#3-benchmark_snakefile-workflow-stage-3)
 
 ## 1. [**Simulation_Snakefile**](https://github.com/hkania/TE_Bench/blob/main/Simulation_Snakefile), **Workflow Stage 1**
 ![Sim](https://github.com/hkania/TE_Bench/blob/ea986de5faff60d6383795668fb87652921b319c/.images/Simulation_Workflow.png?raw=true)
@@ -447,7 +457,7 @@ Once AnnotationGen_Snakefile completes, you will have the following outputs
 
 
 ## 3. [**Benchmark_Snakefile**](https://github.com/hkania/TE_Bench/blob/main/Benchmark_Snakefile), **Workflow Stage 3**
-![Benchmark](https://github.com/hkania/TE_Bench/blob/609da477fe405277c63ccd86be62aa7985b0fa10/.images/Benchmark_Workflow.png?raw=true)
+![Benchmark](https://github.com/hkania/TE_Bench/blob/a148bfe997f82e35604b5951e1aed46ac919f5e8/.images/Benchmark_Workflow_May22.png?raw=true)
 This stage allow you to generate statistics and data visualizations for a given set of annotation GFF files. You can choose to set either the GARLIC file as the reference or a correctly formatted CSV file from another source as the reference.
 
   * By default, Benchmark_Snakefile will run both Stage 3a (comprehensive benchmarking of all TEs) and Stage 3b (selective benchmarking of select TEs, default LTRs in column V5). 
@@ -489,6 +499,7 @@ Benchmark_Snakefile requires these files regardless of what tool(s) you used for
 * Extra TE categories: If you have TEs that are not LINEs, SINEs, LTRs, or DNA elements, you can choose to include them as a category for visualizations. Please add `--config extras=CATEGORY1,CATEGORY2,...` to the end of the snakemake command, or edit the extras key in the `config_benchmark.yaml`.
 * Selective benchmarking column: By deafult, filters on Col5 (`V5`) of the Benchmark_Snakefile expected CSV format. If you'd like to filter on a different column to investigate a separate TE variable, please specify `--config column=V#` to the end of the snakemake command, or edit the column key in the `config_benchmark.yaml`.
 * Selective benchmarking target types: If you want to specify which types within the selective benchmarking column to perform selective benchmarking and visualizations on, please add `--config target_types=TYPE1,TYPE2,...` to the end of the snakemake command, or edit the target_types key in the `config_benchmark.yaml`.
+* Misclassification and Redundancy: By default, Benchmark_Snakefile will run a misclassification and redundancy analysis for test annotation CSV files and assumes column V5 specifies TE class. If you do not want to run these analyses, please add `--config redundancy=false` to the end of the snakemake command, or edit the redundancy key in the `config_benchmark.yaml`.
 
 * To see a description of configuration options and defaults, run the following command in an active TE_Bench environment.
     > ```
@@ -519,17 +530,19 @@ Benchmark_Snakefile requires these files regardless of what tool(s) you used for
     > all                                            1
     > comprehensive_calculate_statistics             X (number of sequences you are analyzing annotation for)
     > comprehensive_coverage_analysis                #X (number of sequences times the number of annotation tools being compared)
-    > comprehensive_garlic_plot_perc_identity        #X
+    > comprehensive_garlic_perc_identity             X * Note, only applies if using GARLIC simulated sequences and the iden=true flag
+    > comprehensive_garlic_plot_perc_identity        #X  * Note, only applies if using GARLIC simulated sequences and the iden=true flag
     > comprehensive_nest_csvs                        X
     > comprehensive_nesting_plot                     X
     > comprehensive_statistics_radar_plot            X
-    > move_ref_csv_test                              X
-    > selective_calculate_statistics                 X
-    > selective_coverage_analysis                    #X
-    > selective_filter_csvs                          X
-    > selective_nest_csvs                            X
-    > selective_nesting_plot                         X
-    > selective_statistics_radar_plot                X
+    > redundancy_heatmaps                            #X
+    > redundancy_summaries                           #X    
+    > selective_calculate_statistics                 ^X (number of sequences you are analyzing annotation for x number of element types)
+    > selective_coverage_analysis                    #^X
+    > selective_filter_csvs                          #^X (number of sequences times number of annotation tools being compared +1 for GARLIC)
+    > selective_nest_csvs                            ^X
+    > selective_nesting_plot                         ^X
+    > selective_statistics_radar_plot                ^X
     > total                                          $ (sum of the counts above)
     > ```
 
@@ -569,6 +582,15 @@ Once Benchmark_Snakefile completes, you will have some subset of the following o
     * output/cleaned_csvs/{seq_name}/nest_csvs/comprehensive/{seq_name}_nonest.csv -- _One CSV file per model sequence specifying the TEs not involved in nesting within the reference sequence._
 
     * output/stats/{seq_name}/comprehensive/plots/{seq_name}_nesting.pdf -- _One three-panel barplot per model sequence showing the distribution of coverage across the nested TE status categories for all tested TE annotations._
+
+6. Misclassification and Redundancy Analysis
+    * output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_partialoverlaps.tsv -- _One TSV file per test TE annotation specifying TEs and associated bps within the test annotation that have partial (<95%) overlap._
+
+    * output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundantoverlaps.tsv -- _One TSV file per test TE annotation specifying TEs and associated bps within the test annotation that have redundant (>95%) overlap. Note that nested TEs (100% overlap) are not included._
+
+    * output/stats/{seq_name}/comprehensive/{seq_name}_{prog}_redundancysummary.txt -- _One text file per TE annotation specifying details about xx within the annotation including xxx._
+
+    * output/stats/{seq_name}/comprehensive/plots/{seq_name}_redundancyheatmap_{prog}.pdf -- _One dual heatmap per TE annotation showing reference-test annotation class correspondence and misclassification on the righthand side and signals of within-annotation redundancy/fragmentation on the lefthandside._
 
 ![BenchOutputB](https://github.com/hkania/TE_Bench/blob/609da477fe405277c63ccd86be62aa7985b0fa10/.images/Bench_B_Scripts.png?raw=true)
 Once Benchmark_Snakefile completes, you will have some subset of the following outputs, or all if you ran Garlic simulations with complete selective benchmarking.
